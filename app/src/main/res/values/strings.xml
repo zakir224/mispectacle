@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Mi-Spectacle</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Take a Selfie</string>
+    <string name="title_activity_default_photos">Default Photos</string>
+    <string name="title_activity_try_on">TryOnActivity</string>
+    <string name="album_name">MiSpectacle</string>
+    <string name="title_activity_open_cv">OpenCvActivity</string>
+    <string name="application_name">Mi-Spectacle</string>
+    <string name="title_activity_activity3_d">Activity3D</string>
+</resources>
