@@ -9,4 +9,7 @@
     <string name="title_activity_open_cv">OpenCvActivity</string>
     <string name="application_name">Mi-Spectacle</string>
     <string name="title_activity_activity3_d">Activity3D</string>
+    <string name="canny_btn_text">Shape</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+
 </resources>

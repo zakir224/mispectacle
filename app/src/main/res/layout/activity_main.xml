@@ -18,7 +18,7 @@
 
         <Button
             android:id="@+id/buttonChoosePhoto"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
@@ -30,7 +30,7 @@
 
         <Button
             android:id="@+id/buttonSelfie"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
@@ -42,19 +42,32 @@
 
         <Button
             android:id="@+id/buttonTryOn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:background="@android:color/holo_blue_light"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="Try Spectacle">
+            android:text="Try on">
 
             </Button>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/canny_btn_text"
+            android:id="@+id/shape_btn"
+            android:layout_weight="1" />
+
+
     </LinearLayout>
 
 
     <ImageView
         android:id="@+id/result"
+        android:src="@drawable/normal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

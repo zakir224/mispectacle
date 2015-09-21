@@ -1,5 +1,9 @@
 package com.aru.mispectacle;
+import android.graphics.Bitmap;
+
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -11,63 +15,67 @@ import org.opencv.imgproc.Imgproc;
  */
 public class CannyDetector {
 
-    Mat src, src_gray;
+    Mat src_gray;
     Mat dst, detected_edges;
+    private Bitmap m;
 
     int edgeThresh = 1;
-    int lowThreshold;
-    final int  max_lowThreshold = 100;
-    int ratio = 3;
+    private int lowThreshold=15;
+    final int max_lowThreshold = 100;
+    int ratio = 2;
     int kernel_size = 3;
-    final String window_name = "Edge Map";
+    private Mat src;
 
-    /**
-     * @function CannyThreshold
-     * @brief Trackbar callback - Canny thresholds input with a ratio 1:3
-     */
-    void CannyThreshold(int, void*)
+    public CannyDetector(){
+        src = new Mat();
+        dst = new Mat();
+        src_gray = new Mat();
+        detected_edges = new Mat();
+    }
+
+    public Mat detect()
     {
+
+        Utils.bitmapToMat(m, src);
+
+        /// Create a matrix of the same type and size as src (for dst)
+        dst.create(src.size(), src.type() );
+        //CV_BGR2GRAY
+        /// Convert the image to grayscale
+        Imgproc.cvtColor(src, src_gray, Imgproc.COLOR_BGRA2GRAY);
+        /// Create a window
+        //namedWindow( window_name, CV_WINDOW_AUTOSIZE );
+        /// Create a Trackbar for user to enter threshold
         /// Reduce noise with a kernel 3x3
         Imgproc.blur(src_gray, detected_edges, new Size(3, 3));
-
         /// Canny detector
         Imgproc.Canny(detected_edges, detected_edges, lowThreshold, lowThreshold * ratio);
 
-        /// Using Canny's output as a mask, we display our result
-//        dst = Scalar.all();
+        /// Using Canny's output as a mask, weU display our result
+        dst = Mat.zeros(src.rows(),src.cols(), CvType.CV_8UC3);
 
-        src.copyTo( dst, detected_edges);
+        src.copyTo(dst, detected_edges);
         //imshow( window_name, dst );
-    }
-
-
-    /** @function main */
-    int main( int argc, char** argv )
-    {
-        /// Load an image
-        src = imread( argv[1] );
-
-        if( !src.data )
-        { return -1; }
-
-        /// Create a matrix of the same type and size as src (for dst)
-        dst.create( src.size(), src.type() );
-
-        /// Convert the image to grayscale
-        cvtColor( src, src_gray, CV_BGR2GRAY );
-
-        /// Create a window
-        namedWindow( window_name, CV_WINDOW_AUTOSIZE );
-
-        /// Create a Trackbar for user to enter threshold
-        createTrackbar( "Min Threshold:", window_name, &lowThreshold, max_lowThreshold, CannyThreshold );
-
-        /// Show the image
-        CannyThreshold(0, 0);
 
         /// Wait until user exit program by pressing a key
-        waitKey(0);
 
-        return 0;
+
+        return dst;
+    }
+
+    public int getLowThreshold() {
+        return lowThreshold;
+    }
+
+    public void setLowThreshold(int lowThreshold) {
+        this.lowThreshold = lowThreshold;
+    }
+
+    public Bitmap getM() {
+        return m;
+    }
+
+    public void setM(Bitmap m) {
+        this.m = m;
     }
 }

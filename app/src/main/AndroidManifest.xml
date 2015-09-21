@@ -48,6 +48,14 @@
             android:name=".Activity3D"
             android:label="@string/title_activity_activity3_d" >
         </activity>
+        <activity
+            android:name=".ASMModelActivity"
+            android:label="@string/application_name" >
+        </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/title_activity_registration" >
+        </activity>
     </application>
 
 </manifest>
