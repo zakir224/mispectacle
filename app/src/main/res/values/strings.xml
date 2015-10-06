@@ -11,5 +11,6 @@
     <string name="title_activity_activity3_d">Activity3D</string>
     <string name="canny_btn_text">Shape</string>
     <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_shopping_choice">Shop for Spectacles</string>
 
 </resources>

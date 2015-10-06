@@ -56,6 +56,10 @@
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration" >
         </activity>
+        <activity
+            android:name=".ShoppingChoiceActivity"
+            android:label="@string/title_activity_shopping_choice" >
+        </activity>
     </application>
 
 </manifest>
