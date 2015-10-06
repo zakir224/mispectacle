@@ -12,5 +12,8 @@
     <string name="canny_btn_text">Shape</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_shopping_choice">Shop for Spectacles</string>
+    <string name="title_activity_photo_chooser">PhotoChooserActivity</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 
 </resources>
