@@ -14,7 +14,7 @@
         android:id="@+id/btnShopByShape"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:onClick="browseFrames"/>
+        android:onClick="shopByFaceShape"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -23,5 +23,5 @@
         android:id="@+id/btnBrowseFrame"
         android:layout_above="@+id/btnShopByShape"
         android:layout_centerHorizontal="true"
-        android:onClick="shopByFace"/>
+        android:onClick="browseFrames"/>
 </RelativeLayout>

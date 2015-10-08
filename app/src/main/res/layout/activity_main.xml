@@ -32,6 +32,7 @@
             android:id="@+id/buttonSelfie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
             android:text="Selfie"
@@ -42,6 +43,7 @@
 
         <Button
             android:id="@+id/buttonTryOn"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"

@@ -1,16 +1,13 @@
 package com.aru.mispectacle;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,19 +24,22 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * A placeholder fragment containing a simple view.
+ *
  */
 public class PhotoSelectorActivityFragment extends DialogFragment implements View.OnClickListener {
 
     public static final int GALLERY_REQUEST_CODE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
     private View view;
     private Button btnOpenGallery;
     private Button btnOpenCamera;
+    private Button btnUseExistingImage;
     private Context context;
     private OnPhotoSelectionFromGalleryListener onPhotoSelectionFromGalleryListener;
     private Uri uri;
-    ImageView imageView;
-            
+    private ImageView imageView;
+    private File dataDir;
+
     public PhotoSelectorActivityFragment() {
     }
 
@@ -49,66 +49,63 @@ public class PhotoSelectorActivityFragment extends DialogFragment implements Vie
         view = inflater.inflate(R.layout.fragment_photo_chooser, container, false);
         btnOpenCamera = (Button) view.findViewById(R.id.btnTakePhotoFromCamera);
         btnOpenGallery = (Button) view.findViewById(R.id.btnUploadFromGallery);
-        imageView = (ImageView) view.findViewById(R.id.imageView);
+        btnUseExistingImage = (Button) view.findViewById(R.id.btnUseExistingImage);
+        checkForExistingImage();
+        getDialog().setTitle("Select Photo");
+        //imageView = (ImageView) view.findViewById(R.id.imageView);
         context = getActivity();
         btnOpenCamera.setOnClickListener(this);
         btnOpenGallery.setOnClickListener(this);
         return view;
     }
 
+    private void checkForExistingImage() {
+
+    }
+
     @Override
     public void onClick(View v) {
 
-        if(btnOpenCamera == v){
-            Toast.makeText(context,"Opening Camera....",Toast.LENGTH_SHORT).show();
-        } else if(btnOpenGallery == v) {
-            Toast.makeText(context,"Opening Gallery....",Toast.LENGTH_SHORT).show();
+        if (btnOpenCamera == v) {
+            Toast.makeText(context, "Opening Camera....", Toast.LENGTH_SHORT).show();
+            openCameraForPhoto();
+        } else if (btnOpenGallery == v) {
+            Toast.makeText(context, "Opening Gallery....", Toast.LENGTH_SHORT).show();
             openGalleryForPhoto();
         }
+    }
+
+    private void openCameraForPhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
     private void openGalleryForPhoto() {
         Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(galleryIntent,"Select photo"), GALLERY_REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select photo"), GALLERY_REQUEST_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_REQUEST_CODE &&
-                resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
+        int a;
 
-            uri = data.getData();
-            onPhotoSelectionFromGalleryListener.onPhotoSelect(uri);
-            File dataDir = context.getDir("stasmdata", Context.MODE_PRIVATE);
-            putDataFileInLocalDir(context,new File(dataDir,"face.jpg"),uri);
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-//                // Log.d(TAG, String.valueOf(bitmap));
-//
-//                ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-//                imageView.setImageBitmap(bitmap);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            File f=new File(dataDir,"face.jpg");
-            try {
-                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-                imageView.setImageBitmap(b);
+        if (resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
 
-                context.startActivity(new Intent(context,MainActivity.class));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            if (requestCode == GALLERY_REQUEST_CODE || requestCode == REQUEST_IMAGE_CAPTURE) {
+                uri = data.getData();
+                dataDir = context.getDir("stasmdata", Context.MODE_PRIVATE);
+                putImageFileInLocalDir(context, new File(dataDir, "face.jpg"), uri);
             }
-
         }
+        onPhotoSelectionFromGalleryListener.onPhotoSelect(uri);
     }
 
-    public interface OnPhotoSelectionFromGalleryListener{
-        public void onPhotoSelect(Uri uri);
+    public interface OnPhotoSelectionFromGalleryListener {
+            void onPhotoSelect(Uri uri);
     }
 
     @Override
@@ -121,11 +118,9 @@ public class PhotoSelectorActivityFragment extends DialogFragment implements Vie
         }
     }
 
-    private void putDataFileInLocalDir(Context context, File f,Uri uri) {
-        //if (debug) Log.e(TAG, "putDataFileInLocalDir: "+f.toString());
+    private void putImageFileInLocalDir(Context context, File f, Uri uri) {
         try {
             InputStream is = context.getContentResolver().openInputStream(uri);
-            //InputStream is = context.getResources().openRawResource(id);
             FileOutputStream os = new FileOutputStream(f);
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -139,6 +134,5 @@ public class PhotoSelectorActivityFragment extends DialogFragment implements Vie
             e.printStackTrace();
             Toast.makeText(context, "Image saving failed", Toast.LENGTH_SHORT).show();
         }
-        //if (debug) Log.e(TAG, "putDataFileInLocalDir: done!");
     }
 }

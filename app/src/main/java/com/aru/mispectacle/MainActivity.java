@@ -29,12 +29,15 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 
-public class MainActivity extends ActionBarActivity implements DefaultPhotosFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity implements DefaultPhotosFragment.OnFragmentInteractionListener
+,PhotoSelectorActivityFragment.OnPhotoSelectionFromGalleryListener {
 
     private final String TAG = "MainActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -64,6 +67,10 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
     private File f_righteye = null;
     private File f_testface = null;
     int imageId;
+    Intent intent;
+    boolean hasPhoto;
+    private PhotoSelectorActivityFragment photoSelectorActivityFragment;
+
     private Bitmap getMFaceBitmap() {
         return mFaceBitmap;
     }
@@ -129,6 +136,9 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        intent = new Intent();
+        photoSelectorActivityFragment = new PhotoSelectorActivityFragment();
+        hasPhoto = getIntent().getBooleanExtra(ShoppingChoiceActivity.PHOTO_SAVED_FROM_GALLERY, false);
         initializeReferences();
         setListeners();
     }
@@ -145,6 +155,16 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         //setMFaceBitmap(3);
         defaultPhotosFragment = new DefaultPhotosFragment();
         seekBar = (SeekBar)findViewById(R.id.seekBar);
+        dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
+        if(hasPhoto) {
+            File f=new File(dataDir ,"face.jpg");
+            try {
+                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                setUserBitmap(b);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setListeners() {
@@ -165,7 +185,8 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         btnChoosePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                defaultPhotosFragment.show(getFragmentManager(), "");
+               // defaultPhotosFragment.show(getFragmentManager(), "");
+                photoSelectorActivityFragment.show(getSupportFragmentManager(),"");
             }
         });
 
@@ -263,41 +284,73 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File f = null;
+//        File f = null;
 
-        try {
-//            f = setUpPhotoFile();
-//            mCurrentPhotoPath = f.getAbsolutePath();
+//        try {
+////            f = setUpPhotoFile();
+////            mCurrentPhotoPath = f.getAbsolutePath();
+////            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+//            f = directoryHelper.setUpPhotoFile();
+//            directoryHelper.setmCurrentPhotoPath(f.getAbsolutePath());
 //            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-            f = directoryHelper.setUpPhotoFile();
-            directoryHelper.setmCurrentPhotoPath(f.getAbsolutePath());
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-        } catch (IOException e) {
-            e.printStackTrace();
-            f = null;
-//            mCurrentPhotoPath = null;
-            directoryHelper.setmCurrentPhotoPath(null);
-        }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            f = null;
+////            mCurrentPhotoPath = null;
+//            directoryHelper.setmCurrentPhotoPath(null);
+//        }
 
 
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
+Uri uri;
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            if (resultCode == RESULT_OK) {
+////                if (directoryHelper.getmCurrentPhotoPath() != null) {
+//                    Log.d(TAG, "OnActivity result");
+////                    mFaceBitmap = directoryHelper.getPic(userImage);
+////                    cannyDetector.setM(mFaceBitmap);
+////                    setUserBitmap(mFaceBitmap);
+////                    directoryHelper.galleryAddPic();
+//////                    mCurrentPhotoPath = null;
+////                    directoryHelper.setmCurrentPhotoPath(null);
+////                    Log.d(TAG, "OnActivity result Finished");
+//                    uri = data.getData();
+//
+//
+//                    dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
+//                    putImageFileInLocalDir(getBaseContext(), new File(dataDir, "face.jpg"), uri);
+//
+//                    File f = new File(dataDir, "face.jpg");
+//                    try {
+//                        Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+//                        setUserBitmap(b);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//
+////                }
+//            }
+//        }
+//    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (resultCode == RESULT_OK) {
-                if (directoryHelper.getmCurrentPhotoPath() != null) {
-                    Log.d(TAG, "OnActivity result");
-                    mFaceBitmap = directoryHelper.getPic(userImage);
-                    cannyDetector.setM(mFaceBitmap);
-                    setUserBitmap(mFaceBitmap);
-                    directoryHelper.galleryAddPic();
-//                    mCurrentPhotoPath = null;
-                    directoryHelper.setmCurrentPhotoPath(null);
-                    Log.d(TAG, "OnActivity result Finished");
-                }
+    private void putImageFileInLocalDir(Context context, File f, Uri uri) {
+        try {
+            InputStream is = context.getContentResolver().openInputStream(uri);
+            FileOutputStream os = new FileOutputStream(f);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
             }
+            is.close();
+            os.close();
+            Toast.makeText(context, "Image Saved", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Image saving failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -402,7 +455,7 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
             public void run() {
                 Looper.prepare();
 
-                if (mFaceBitmap == null) {
+                if (mFaceBitmap != null || hasPhoto) {
                     points = FindFaceLandmarks(0, 0);
                     //if (debug) Log.e(TAG, ""+points.length);
                     //handle possible error
@@ -553,4 +606,20 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         distance = Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
         return distance;
     }
+
+    @Override
+    public void onPhotoSelect(Uri uri) {
+        photoSelectorActivityFragment.dismiss();
+        dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
+
+            File f=new File(dataDir ,"face.jpg");
+            try {
+                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+                setUserBitmap(b);
+                hasPhoto = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
 }
