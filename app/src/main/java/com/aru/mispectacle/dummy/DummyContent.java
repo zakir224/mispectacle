@@ -25,17 +25,9 @@ public class DummyContent {
 
     static {
         // Add 3 sample items.
-        addItem(new DummyItem(1,  "Photo 1"));
-        addItem(new DummyItem(2,  "Photo 2"));
-        addItem(new DummyItem(3,  "Photo 3"));
-        addItem(new DummyItem(4,  "Photo 4"));
-        addItem(new DummyItem(5,  "Photo 5"));
-        addItem(new DummyItem(6,  "Photo 6"));
-        addItem(new DummyItem(7,  "Photo 7"));
-        addItem(new DummyItem(8, "Photo 8"));
-        addItem(new DummyItem(9, "Photo 9"));
-        addItem(new DummyItem(10, "Photo 10"));
-        addItem(new DummyItem(11, "Photo 11"));
+        addItem(new DummyItem(1, "Item 1"));
+        addItem(new DummyItem(2, "Item 2"));
+        addItem(new DummyItem(3, "Item 3"));
     }
 
     private static void addItem(DummyItem item) {

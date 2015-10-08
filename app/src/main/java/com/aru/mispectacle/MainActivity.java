@@ -133,7 +133,6 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         setListeners();
     }
 
-
     private void initializeReferences() {
         faceDetectionHelper = new FaceDetectionHelper(getBaseContext());
         directoryHelper = new DirectoryHelper(getBaseContext());
@@ -143,7 +142,7 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         btnChoosePhoto = ((Button) findViewById(R.id.buttonChoosePhoto));
         userImage = ((ImageView) findViewById(R.id.result));
         shapeBtn = (Button)findViewById(R.id.shape_btn);
-        setMFaceBitmap(3);
+        //setMFaceBitmap(3);
         defaultPhotosFragment = new DefaultPhotosFragment();
         seekBar = (SeekBar)findViewById(R.id.seekBar);
     }
@@ -182,8 +181,8 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
 
 
                 }
-                f_testface = new File(dataDir, "face.jpg");
-                putDataFileInLocalDir(MainActivity.this, imageId, f_testface);
+                //f_testface = new File(dataDir, "face.jpg");
+                //putDataFileInLocalDir(MainActivity.this, imageId, f_testface);
                 System.loadLibrary("native_sample");
                 processing();
             }
@@ -403,7 +402,7 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
             public void run() {
                 Looper.prepare();
 
-                if (mFaceBitmap != null) {
+                if (mFaceBitmap == null) {
                     points = FindFaceLandmarks(0, 0);
                     //if (debug) Log.e(TAG, ""+points.length);
                     //handle possible error
