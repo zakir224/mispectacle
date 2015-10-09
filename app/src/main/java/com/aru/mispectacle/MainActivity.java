@@ -1,13 +1,17 @@
 package com.aru.mispectacle;
 
+import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class MainActivity extends ActionBarActivity implements DefaultPhotosFragment.OnFragmentInteractionListener
+public class MainActivity extends ActionBarActivity implements SpectacleFrameFragment.OnFragmentInteractionListener
 ,PhotoSelectorActivityFragment.OnPhotoSelectionFromGalleryListener {
 
     private final String TAG = "MainActivity";
@@ -48,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
     private Bitmap bmp;
     private Button btnChoosePhoto;
     private Mat m;
-    private DefaultPhotosFragment defaultPhotosFragment;
+    private DialogFragment spectacleFrameFragment;
     private Button tryOn;
     private Button selfie;
     private FaceDetectionHelper faceDetectionHelper;
@@ -70,6 +74,10 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
     Intent intent;
     boolean hasPhoto;
     private PhotoSelectorActivityFragment photoSelectorActivityFragment;
+
+    enum Shape {
+        SQUARE, ROUND, OVAL, HEART
+    }
 
     private Bitmap getMFaceBitmap() {
         return mFaceBitmap;
@@ -153,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         userImage = ((ImageView) findViewById(R.id.result));
         shapeBtn = (Button)findViewById(R.id.shape_btn);
         //setMFaceBitmap(3);
-        defaultPhotosFragment = new DefaultPhotosFragment();
+        spectacleFrameFragment = new SpectacleFrameFragment();
         seekBar = (SeekBar)findViewById(R.id.seekBar);
         dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
         if(hasPhoto) {
@@ -178,14 +186,14 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         tryOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tryOnSpectacle();
+//                tryOnSpectacle();
             }
         });
 
         btnChoosePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // defaultPhotosFragment.show(getFragmentManager(), "");
+               // spectacleFrameFragment.show(getFragmentManager(), "");
                 photoSelectorActivityFragment.show(getSupportFragmentManager(),"");
             }
         });
@@ -212,14 +220,14 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
 
     }
 
-    private void tryOnSpectacle() {
+    private void tryOnSpectacle(String str) {
         try {
 //            bmp = mFaceBitmap;
 //            mFaceBitmap.recycle();
             m = faceDetectionHelper.getEyeMatrix(mFaceBitmap);
             bmp = SpectacleUtils.matToBitmap(m, mFaceBitmap.getWidth(), mFaceBitmap.getHeight());
             //bmp.recycle();
-            setSpectacleBitmap();
+            setSpectacleBitmap(str);
             Float angle = SpectacleUtils.getAngle(faceDetectionHelper.getLeftEyeCenter(), faceDetectionHelper.getRightEyeCenter());
             setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, faceDetectionHelper.getLeftEye().y + 10,
                     faceDetectionHelper.getLeftEye().x - (int) (faceDetectionHelper.getEyesDist() / 3), angle, this));
@@ -270,13 +278,15 @@ public class MainActivity extends ActionBarActivity implements DefaultPhotosFrag
         return super.onOptionsItemSelected(item);
     }
 
-    void setSpectacleBitmap() {
-        Bitmap vv = BitmapFactory.decodeResource(getResources(), R.drawable.sp2);
+    void setSpectacleBitmap(String spectacle) {
+        int id = getResources().getIdentifier(spectacle,"drawable",getPackageName());
+        Bitmap vv = BitmapFactory.decodeResource(getResources(), id);
         spectacleBitmap = Bitmap.createScaledBitmap(vv, faceDetectionHelper.getGlassWidth(), faceDetectionHelper.getGlassHeight(), true);
     }
 
 
     void setUserBitmap(Bitmap bitmap) {
+        mFaceBitmap = bitmap;
         userImage.setImageBitmap(bitmap);
     }
 
@@ -363,11 +373,11 @@ Uri uri;
     }
 
     @Override
-    public void onFragmentInteraction(int id) {
-        defaultPhotosFragment.dismiss();
-        setMFaceBitmap(id);
-        Toast.makeText(this, "Photo " + id + " choosen", Toast.LENGTH_LONG).show();
-
+    public void onFragmentInteraction(String id) {
+        spectacleFrameFragment.dismiss();
+//        setMFaceBitmap(id);
+//        Toast.makeText(this, "Photo " + id + " choosen", Toast.LENGTH_LONG).show();
+        tryOnSpectacle(id);
     }
 
 
@@ -450,7 +460,7 @@ Uri uri;
     ProgressDialog pd;
     int[] points;
     private void processing() {
-        if (pd == null) pd = ProgressDialog.show(MainActivity.this, null, "Processing...");
+        if (pd == null) pd = ProgressDialog.show(MainActivity.this, null, "Analyzing image for identifying shape...");
         new Thread(new Runnable() {
             public void run() {
                 Looper.prepare();
@@ -466,10 +476,10 @@ Uri uri;
                     } else if ((points[0] == -3) && (points[1] == -3)) {
                         Toast.makeText(MainActivity.this, "No face found in /data/data/org.androidhat.stasmandroiddemo/app_stasmdata/testface.jpg", Toast.LENGTH_LONG).show();
                     } else {
-
-                        Toast.makeText(getBaseContext(),"Landmark Recieved"
-                                + points[0] +"," +points[1] ,Toast.LENGTH_SHORT).show();
-                        getShape();
+//                        Toast.makeText(getBaseContext(),"Landmark Recieved"
+//                                + points[0] +"," +points[1] ,Toast.LENGTH_SHORT).show();
+                        detectedShape = getShape();
+                        showShapeFoundDialog(detectedShape);
                     }
                     try {pd.dismiss(); pd = null;} catch (Exception e){}
                 }
@@ -481,10 +491,35 @@ Uri uri;
             }
         }).start();
     }
+
+    private void showShapeFoundDialog(final Shape detectedShape) {
+        final AlertDialog.Builder alertBuilder = new AlertDialog.Builder( this );
+
+        alertBuilder.setTitle("Your Face Shape");
+        alertBuilder.setMessage("Congratulations you have a "+ detectedShape.name() +" shape.\n\nNot happy? Cancel to try another image");
+        alertBuilder.setCancelable(true);
+        alertBuilder.setPositiveButton("Shop Frames", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getBaseContext(),"Shopping Frames for " + detectedShape.name() ,Toast.LENGTH_SHORT).show();
+                spectacleFrameFragment.show(getSupportFragmentManager(),"");
+            }
+        });
+        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getBaseContext(),"Cancelled" ,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog functionDialog = alertBuilder.create();
+        functionDialog.show();
+    }
+
     double width;
     double height;
     double ratio;
-
+    Shape detectedShape;
     Point a = new Point();
     Point b = new Point();
     Point c = new Point();
@@ -501,7 +536,7 @@ Uri uri;
     double ab,bc,ca;
 
 
-    public void getShape() {
+    public Shape getShape() {
         int left[] = {10000000,1000000};
         int right[] = {0,0};
         int top[] = {10000000,1000000};
@@ -578,26 +613,31 @@ Uri uri;
             double threshold = avgCross/diagonal;
             if(threshold <= .47) {
 //                myfile << " Round,";
-                Toast.makeText(getBaseContext(),"Round",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(),"Round",Toast.LENGTH_LONG).show();
+                return Shape.ROUND;
             }
 
             else if(threshold > .47){
 //                myfile << " Square,";
-                Toast.makeText(getBaseContext(),"Square",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(),"Square",Toast.LENGTH_LONG).show();
+                return Shape.SQUARE;
             }
 
         } else {
             if(ohAngle <= 164){
 //                myfile << " Oval,";
-                Toast.makeText(getBaseContext(),"Oval",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(),"Oval",Toast.LENGTH_LONG).show();
+                return Shape.OVAL;
             }
 
             else {
                 //myfile << " Heart,";
                 Toast.makeText(getBaseContext(),"Heart",Toast.LENGTH_LONG).show();
+                return Shape.HEART;
             }
 
         }
+        return null;
     }
 
     double getDistance(Point a, Point b)

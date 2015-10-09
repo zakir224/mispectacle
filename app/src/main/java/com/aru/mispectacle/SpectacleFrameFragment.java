@@ -35,7 +35,7 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private String[] listItems;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -74,10 +74,19 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        listItems = new String[8];
+        listItems[0] = "s1";
+        listItems[1] = "s2";
+        listItems[2] = "s3";
+        listItems[3] = "s4";
+        listItems[4] = "s5";
+        listItems[5] = "s6";
+        listItems[6] = "s7";
+        listItems[7] = "s8";
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        mAdapter = new SpectacleFrameAdapter(getActivity(),
+                android.R.layout.simple_list_item_1,listItems);
     }
 
     @Override
@@ -117,8 +126,8 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-            this.dismiss();
+            mListener.onFragmentInteraction(listItems[position]);
+
         }
     }
 
@@ -147,7 +156,7 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int id);
+        public void onFragmentInteraction(String id);
     }
 
 }
