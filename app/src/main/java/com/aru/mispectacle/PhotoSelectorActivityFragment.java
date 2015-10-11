@@ -50,17 +50,23 @@ public class PhotoSelectorActivityFragment extends DialogFragment implements Vie
         btnOpenCamera = (Button) view.findViewById(R.id.btnTakePhotoFromCamera);
         btnOpenGallery = (Button) view.findViewById(R.id.btnUploadFromGallery);
         btnUseExistingImage = (Button) view.findViewById(R.id.btnUseExistingImage);
-        checkForExistingImage();
+        context = getActivity();
+        if(checkForExistingImage())
+            btnUseExistingImage.setVisibility(View.VISIBLE);
         getDialog().setTitle("Select Photo");
         //imageView = (ImageView) view.findViewById(R.id.imageView);
-        context = getActivity();
+
         btnOpenCamera.setOnClickListener(this);
         btnOpenGallery.setOnClickListener(this);
+        btnUseExistingImage.setOnClickListener(this);
         return view;
     }
 
-    private void checkForExistingImage() {
+    private boolean checkForExistingImage() {
+        dataDir = context.getDir("stasmdata", Context.MODE_PRIVATE);
 
+        File f=new File(dataDir ,"face.jpg");
+        return f.exists();
     }
 
     @Override
@@ -72,6 +78,8 @@ public class PhotoSelectorActivityFragment extends DialogFragment implements Vie
         } else if (btnOpenGallery == v) {
             Toast.makeText(context, "Opening Gallery....", Toast.LENGTH_SHORT).show();
             openGalleryForPhoto();
+        } else if(btnUseExistingImage == v){
+            onPhotoSelectionFromGalleryListener.onPhotoSelect(uri);
         }
     }
 

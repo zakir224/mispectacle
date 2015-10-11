@@ -70,6 +70,7 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -93,7 +94,7 @@ public class SpectacleFrameFragment extends DialogFragment implements AbsListVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spectacleframe, container, false);
-
+        getDialog().setTitle("Select spectacles to try-on");
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);

@@ -11,7 +11,11 @@
     tools:context="com.aru.mispectacle.PhotoSelectorActivityFragment">
 
     <Button
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        style="@style/SplashTheme"
         android:id="@+id/btnUploadFromGallery"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,25 +23,22 @@
         android:text="@string/gallery" />
 
     <Button
+        android:layout_margin="10dp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        style="@style/SplashTheme"
         android:id="@+id/btnTakePhotoFromCamera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnUploadFromGallery"
-        android:layout_alignEnd="@+id/btnUploadFromGallery"
-        android:layout_alignLeft="@+id/btnUploadFromGallery"
-        android:layout_alignRight="@+id/btnUploadFromGallery"
-        android:layout_alignStart="@+id/btnUploadFromGallery"
         android:text="@string/camera" />
 
     <Button
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        style="@style/SplashTheme"
         android:id="@+id/btnUseExistingImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnUploadFromGallery"
-        android:layout_alignEnd="@+id/btnUploadFromGallery"
-        android:layout_alignLeft="@+id/btnUploadFromGallery"
-        android:layout_alignRight="@+id/btnUploadFromGallery"
-        android:layout_alignStart="@+id/btnUploadFromGallery"
         android:text="@string/existing_image"
         android:visibility="gone"/>
 

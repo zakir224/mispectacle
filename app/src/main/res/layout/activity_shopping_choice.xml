@@ -7,28 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context="com.aru.mispectacle.ShoppingChoiceActivity">
 
     <Button
         android:id="@+id/btnShopByShape"
         android:layout_margin="20dp"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_purple"
+        android:layout_height="wrap_content"
         android:onClick="shopByFaceShape"
         android:text="Shop by Shape"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
+        style="@style/SplashTheme"/>
 
     <Button
+        style="@style/SplashTheme"
         android:id="@+id/btnBrowseFrame"
         android:layout_margin="20dp"
-        android:layout_weight="1"
-        android:background="@android:color/holo_purple"
         android:textColor="@android:color/white"
+        android:background="@android:color/holo_blue_light"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/btnShopByShape"
         android:layout_centerHorizontal="true"
         android:onClick="browseFrames"
