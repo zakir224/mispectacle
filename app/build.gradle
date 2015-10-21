@@ -23,4 +23,5 @@ dependencies {
     compile project(':libs:opencv')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile('org.bytedeco:javacv:0.11')
 }
