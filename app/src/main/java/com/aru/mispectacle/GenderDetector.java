@@ -14,6 +14,7 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.util.List;
 public class GenderDetector {
 
     private AssetManager assetManager;
-    private Mat m;
+    private opencv_core.Mat m;
     private Context context;
     private List<String> fileList;
     private opencv_core.MatVector trainingImageMatVector;

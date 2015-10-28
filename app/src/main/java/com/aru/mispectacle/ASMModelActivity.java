@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import java.io.*;
 
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
+//import org.opencv.android.OpenCVLoader;
+//import org.opencv.core.Mat;
 
 import android.app.ProgressDialog;
 import android.util.*;
@@ -21,6 +21,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 import android.os.Looper;
+
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
 
 public class ASMModelActivity extends Activity {
     private final String TAG = "StasmAndroidDemo";

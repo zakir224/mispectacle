@@ -32,6 +32,8 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 
+import org.opencv.core.Mat;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,6 +55,37 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
     private Button btnChoosePhoto;
     private Mat m;
     private DialogFragment spectacleFrameFragment;
+    //    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            if (resultCode == RESULT_OK) {
+////                if (directoryHelper.getmCurrentPhotoPath() != null) {
+//                    Log.d(TAG, "OnActivity result");
+////                    mFaceBitmap = directoryHelper.getPic(userImage);
+////                    cannyDetector.setM(mFaceBitmap);
+////                    setUserBitmap(mFaceBitmap);
+////                    directoryHelper.galleryAddPic();
+//////                    mCurrentPhotoPath = null;
+////                    directoryHelper.setmCurrentPhotoPath(null);
+////                    Log.d(TAG, "OnActivity result Finished");
+//                    uri = data.getData();
+//
+//
+//                    dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
+//                    putImageFileInLocalDir(getBaseContext(), new File(dataDir, "face.jpg"), uri);
+//
+//                    File f = new File(dataDir, "face.jpg");
+//                    try {
+//                        Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+//                        setUserBitmap(b);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//
+////                }
+//            }
+//        }
+    public int[] points;
     private Button tryOn;
     private Button selfie;
     private FaceDetectionHelper faceDetectionHelper;
@@ -73,16 +106,17 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
     int imageId;
     Intent intent;
     boolean hasPhoto;
-    private PhotoSelectorActivityFragment photoSelectorActivityFragment;
 
+    private PhotoSelectorActivityFragment photoSelectorActivityFragment;
     enum Shape {
         SQUARE, ROUND, OVAL, HEART
+
     }
+
 
     private Bitmap getMFaceBitmap() {
         return mFaceBitmap;
     }
-
 
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -134,10 +168,10 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
         super.onPause();
     }
 
+
     public void onDestroy() {
         super.onDestroy();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,13 +258,16 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
         try {
 //            bmp = mFaceBitmap;
 //            mFaceBitmap.recycle();
+
             m = faceDetectionHelper.getEyeMatrix(mFaceBitmap);
             bmp = SpectacleUtils.matToBitmap(m, mFaceBitmap.getWidth(), mFaceBitmap.getHeight());
             //bmp.recycle();
             setSpectacleBitmap(str);
             Float angle = SpectacleUtils.getAngle(faceDetectionHelper.getLeftEyeCenter(), faceDetectionHelper.getRightEyeCenter());
-            setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, faceDetectionHelper.getLeftEye().y + 10,
-                    faceDetectionHelper.getLeftEye().x - (int) (faceDetectionHelper.getEyesDist() / 3), angle, this));
+//            setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, faceDetectionHelper.getLeftEye().y + 10,
+//                    faceDetectionHelper.getLeftEye().x - (int) (faceDetectionHelper.getEyesDist() / 3), angle, this));
+setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, points[36]-10,
+                    points[37], angle, this));
 
 
         } catch (FaceNotDetectedException e) {
@@ -278,72 +315,26 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
         return super.onOptionsItemSelected(item);
     }
 
+
     void setSpectacleBitmap(String spectacle) {
         int id = getResources().getIdentifier(spectacle,"drawable",getPackageName());
         Bitmap vv = BitmapFactory.decodeResource(getResources(), id);
-        spectacleBitmap = Bitmap.createScaledBitmap(vv, faceDetectionHelper.getGlassWidth(), faceDetectionHelper.getGlassHeight(), true);
+//        spectacleBitmap = Bitmap.createScaledBitmap(vv, faceDetectionHelper.getGlassWidth(), faceDetectionHelper.getGlassHeight(), true);
+        spectacleBitmap = Bitmap.createScaledBitmap(vv, points[50]-points[36], 30, true);
     }
-
 
     void setUserBitmap(Bitmap bitmap) {
         mFaceBitmap = bitmap;
         userImage.setImageBitmap(bitmap);
     }
-
     private void dispatchTakePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-//        File f = null;
-
-//        try {
-////            f = setUpPhotoFile();
-////            mCurrentPhotoPath = f.getAbsolutePath();
-////            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//            f = directoryHelper.setUpPhotoFile();
-//            directoryHelper.setmCurrentPhotoPath(f.getAbsolutePath());
-//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            f = null;
-////            mCurrentPhotoPath = null;
-//            directoryHelper.setmCurrentPhotoPath(null);
-//        }
-
-
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
-Uri uri;
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            if (resultCode == RESULT_OK) {
-////                if (directoryHelper.getmCurrentPhotoPath() != null) {
-//                    Log.d(TAG, "OnActivity result");
-////                    mFaceBitmap = directoryHelper.getPic(userImage);
-////                    cannyDetector.setM(mFaceBitmap);
-////                    setUserBitmap(mFaceBitmap);
-////                    directoryHelper.galleryAddPic();
-//////                    mCurrentPhotoPath = null;
-////                    directoryHelper.setmCurrentPhotoPath(null);
-////                    Log.d(TAG, "OnActivity result Finished");
-//                    uri = data.getData();
-//
-//
-//                    dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
-//                    putImageFileInLocalDir(getBaseContext(), new File(dataDir, "face.jpg"), uri);
-//
-//                    File f = new File(dataDir, "face.jpg");
-//                    try {
-//                        Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//                        setUserBitmap(b);
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//
-////                }
-//            }
-//        }
+    Uri uri;
+
 //    }
 
     private void putImageFileInLocalDir(Context context, File f, Uri uri) {
@@ -365,13 +356,6 @@ Uri uri;
     }
 
 
-    public void setCannyEdgePhoto(int threshold) {
-        //cannyDetector.setLowThreshold(threshold);
-        m = cannyDetector.detect();
-        Utils.matToBitmap(m,mFaceBitmap);
-        setUserBitmap(mFaceBitmap);
-    }
-
     @Override
     public void onFragmentInteraction(String id) {
         spectacleFrameFragment.dismiss();
@@ -379,8 +363,6 @@ Uri uri;
 //        Toast.makeText(this, "Photo " + id + " choosen", Toast.LENGTH_LONG).show();
         tryOnSpectacle(id);
     }
-
-
     private void setMFaceBitmap(int id) {
         switch (id) {
             case 1:
@@ -458,7 +440,6 @@ Uri uri;
         }
     }
     ProgressDialog pd;
-    int[] points;
     private void processing() {
         if (pd == null) pd = ProgressDialog.show(MainActivity.this, null, "Analyzing image for identifying shape...");
         new Thread(new Runnable() {

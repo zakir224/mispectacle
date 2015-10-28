@@ -33,41 +33,41 @@
             android:name=".DefaultPhotosActivity"
             android:label="@string/title_activity_default_photos" >
         </activity>
-        <activity
-            android:name=".TryOnActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_try_on"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/application_name" >
+        <!--<activity-->
+            <!--android:name=".TryOnActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:label="@string/title_activity_try_on"-->
+            <!--android:screenOrientation="portrait" >-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".MainActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:label="@string/application_name" >-->
 
 
-        </activity>
+        <!--</activity>-->
         <activity
             android:name=".Activity3D"
             android:label="@string/title_activity_activity3_d" >
         </activity>
-        <activity
-            android:name=".ASMModelActivity"
-            android:label="@string/application_name" >
-        </activity>
-        <activity
-            android:name=".RegistrationActivity"
-            android:label="@string/title_activity_registration" >
-        </activity>
-        <activity
-            android:name=".ShoppingChoiceActivity"
-            android:label="@string/title_activity_shopping_choice" >
+        <!--<activity-->
+            <!--android:name=".ASMModelActivity"-->
+            <!--android:label="@string/application_name" >-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".RegistrationActivity"-->
+            <!--android:label="@string/title_activity_registration" >-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".ShoppingChoiceActivity"-->
+            <!--android:label="@string/title_activity_shopping_choice" >-->
 
 
-        </activity>
-        <activity
-            android:name=".PhotoSelectorActivity"
-            android:label="@string/title_activity_photo_chooser" >
-        </activity>
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".PhotoSelectorActivity"-->
+            <!--android:label="@string/title_activity_photo_chooser" >-->
+        <!--</activity>-->
     </application>
 
 </manifest>
