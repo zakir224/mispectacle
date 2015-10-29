@@ -17,16 +17,16 @@ public class Spectacle {
     private long spectacleId;
     private String spectacleBrand;
     private double spectaclePrice;
-    private long spectacleIdCategoryId;
+    private long spectacleCategoryId;
     private String spectacleLocationUri;
-    private int spectacleGenderId;
+    private long spectacleGenderId;
 
-    public long getSpectacleIdCategoryId() {
-        return spectacleIdCategoryId;
+    public long getSpectacleCategoryId() {
+        return spectacleCategoryId;
     }
 
-    public void setSpectacleIdCategoryId(long spectacleIdCategoryId) {
-        this.spectacleIdCategoryId = spectacleIdCategoryId;
+    public void setSpectacleCategoryId(long spectacleCategoryId) {
+        this.spectacleCategoryId = spectacleCategoryId;
     }
 
     public double getSpectaclePrice() {
@@ -61,11 +61,11 @@ public class Spectacle {
         this.spectacleLocationUri = spectacleLocationUri;
     }
 
-    public int getSpectacleGenderId() {
+    public long getSpectacleGenderId() {
         return spectacleGenderId;
     }
 
-    public void setSpectacleGenderId(int spectacleGenderId) {
+    public void setSpectacleGenderId(long spectacleGenderId) {
         this.spectacleGenderId = spectacleGenderId;
     }
 }

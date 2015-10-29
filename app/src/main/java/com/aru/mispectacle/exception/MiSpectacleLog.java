@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public class MiSpectacleLog
 {
-    static final String TAG = "EzAdTV";
+    static final String TAG = "MiSpectacle";
 
     public static void d(String msg) {
         Log.d(TAG, msg);
