@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.aru.mispectacle.adapter.SpectacleFrameAdapter;
 import com.aru.mispectacle.model.Spectacle;
 
 import java.util.ArrayList;

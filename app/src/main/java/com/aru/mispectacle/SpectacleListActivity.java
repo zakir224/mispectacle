@@ -22,7 +22,6 @@ import com.aru.mispectacle.SpectacleFrameListFragment.OnSpectacleSelectedListene
 public class SpectacleListActivity extends ActionBarActivity implements OnSpectacleSelectedListener {
 
 
-
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
 
@@ -34,7 +33,7 @@ public class SpectacleListActivity extends ActionBarActivity implements OnSpecta
         SpectacleFrameListFragment spectacleFrameFragment = new SpectacleFrameListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.list_spectacle,spectacleFrameFragment);
+        fragmentTransaction.add(R.id.list_spectacle, spectacleFrameFragment);
         fragmentTransaction.commit();
     }
 

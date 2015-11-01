@@ -1,4 +1,4 @@
-package com.aru.mispectacle;
+package com.aru.mispectacle.detector;
 
 import android.content.Context;
 import android.content.res.AssetManager;

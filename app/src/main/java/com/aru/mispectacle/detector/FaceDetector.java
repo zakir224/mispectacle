@@ -1,4 +1,4 @@
-package com.aru.mispectacle;
+package com.aru.mispectacle.detector;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.aru.mispectacle.R;
 import com.aru.mispectacle.exception.FaceNotDetectedException;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -29,7 +30,7 @@ import java.io.InputStream;
 /**
  * Created by Md Zakir Hossen on 4/14/2015.
  */
-public class FaceDetectionHelper {
+public class FaceDetector {
 
     private final String TAG = "OPENCV";
     private static final Scalar FACE_RECT_COLOR = new Scalar(255, 0, 0, 0);
@@ -105,7 +106,7 @@ public class FaceDetectionHelper {
     }
 
 
-    FaceDetectionHelper(Context context) {
+    public FaceDetector(Context context) {
         this.context = context;
     }
 

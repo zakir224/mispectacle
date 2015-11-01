@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.aru.mispectacle.detector.FaceDetector;
 import com.aru.mispectacle.exception.FaceNotDetectedException;
 
 import org.opencv.android.LoaderCallbackInterface;
@@ -84,7 +85,7 @@ public class MainActivity extends ActionBarActivity  {
     public int[] points;
     private Button tryOn;
     private Button selfie;
-    private FaceDetectionHelper faceDetectionHelper;
+    private FaceDetector faceDetector;
     private DirectoryHelper directoryHelper;
     public native int[] FindFaceLandmarks(float ratioW, float ratioH);
     private Bitmap mFaceBitmap;
@@ -156,7 +157,7 @@ public class MainActivity extends ActionBarActivity  {
     @Override
     public void onResume() {
         super.onResume();
-        faceDetectionHelper.mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        faceDetector.mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
     }
 
     @Override
@@ -182,7 +183,7 @@ public class MainActivity extends ActionBarActivity  {
     }
 
     private void initializeReferences() {
-        faceDetectionHelper = new FaceDetectionHelper(getBaseContext());
+        faceDetector = new FaceDetector(getBaseContext());
         directoryHelper = new DirectoryHelper(getBaseContext());
         cannyDetector = new CannyDetector();
         tryOn = (Button) findViewById(R.id.btn_sp_list_try_on);
@@ -255,11 +256,11 @@ public class MainActivity extends ActionBarActivity  {
 //            bmp = mFaceBitmap;
 //            mFaceBitmap.recycle();
 
-            m = faceDetectionHelper.getEyeMatrix(mFaceBitmap);
+            m = faceDetector.getEyeMatrix(mFaceBitmap);
             bmp = SpectacleUtils.matToBitmap(m, mFaceBitmap.getWidth(), mFaceBitmap.getHeight());
             //bmp.recycle();
             setSpectacleBitmap(str);
-            Float angle = SpectacleUtils.getAngle(faceDetectionHelper.getLeftEyeCenter(), faceDetectionHelper.getRightEyeCenter());
+            Float angle = SpectacleUtils.getAngle(faceDetector.getLeftEyeCenter(), faceDetector.getRightEyeCenter());
 //            setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, faceDetectionHelper.getLeftEye().y + 10,
 //                    faceDetectionHelper.getLeftEye().x - (int) (faceDetectionHelper.getEyesDist() / 3), angle, this));
 setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, points[36]-10,

@@ -1,4 +1,4 @@
-package com.aru.mispectacle;
+package com.aru.mispectacle.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aru.mispectacle.R;
 import com.aru.mispectacle.model.Spectacle;
 
 import java.util.ArrayList;

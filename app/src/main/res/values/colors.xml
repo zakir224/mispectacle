@@ -17,7 +17,7 @@
         <item name="darkred" type="color">#FFCC0000</item>
         <item name="background" type="color">#ff3ba4dc</item>
         <item name="installation_background" type="color">#f4f4f4</item>
-        <item name="installation_button_background" type="color">#66cccc</item>
+        <item name="installation_button_background" type="color">#ff3ba4dc</item>
         <item name="installation_header_one_color" type="color">#3b3b3b</item>
         <item name="installation_edittext_background_color" type="color">#ffffff</item>
 
