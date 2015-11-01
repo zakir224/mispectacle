@@ -1,15 +1,20 @@
 package com.aru.mispectacle;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.aru.mispectacle.SpectacleFrameListFragment.OnSpectacleSelectedListener;
+import com.aru.mispectacle.db.SpectacleDataSource;
 
-public class SplashActivity extends ActionBarActivity {
+
+public class SplashActivity extends ActionBarActivity implements OnSpectacleSelectedListener{
 
     ImageView iv;
     @Override
@@ -21,35 +26,17 @@ public class SplashActivity extends ActionBarActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //startActivity(new Intent(SplashActivity.this,ShoppingChoiceActivity.class));
+                SpectacleDataSource spectacleDataSource = new SpectacleDataSource(getBaseContext());
+                spectacleDataSource.open();
+                startActivity(new Intent(SplashActivity.this, SpectacleListActivity.class));
+
             }
-        },4000);
+        },1000);
 
     }
 
-
-
-
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_splash, menu);
-        return true;
-    }
+    public void onSpectacleSelected(String id) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

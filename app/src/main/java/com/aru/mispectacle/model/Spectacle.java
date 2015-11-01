@@ -21,6 +21,16 @@ public class Spectacle {
     private String spectacleLocationUri;
     private long spectacleGenderId;
 
+    public Spectacle() {
+
+    }
+
+    public Spectacle(String spectacleBrand, long spectacleCategoryId, double spectaclePrice) {
+        this.spectacleBrand = spectacleBrand;
+        this.spectacleCategoryId = spectacleCategoryId;
+        this.spectaclePrice = spectaclePrice;
+    }
+
     public long getSpectacleCategoryId() {
         return spectacleCategoryId;
     }

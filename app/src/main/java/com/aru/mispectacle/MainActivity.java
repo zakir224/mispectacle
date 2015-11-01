@@ -11,7 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,11 +28,8 @@ import com.aru.mispectacle.exception.FaceNotDetectedException;
 
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-
-import org.opencv.core.Mat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,8 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class MainActivity extends ActionBarActivity implements SpectacleFrameFragment.OnFragmentInteractionListener
-,PhotoSelectorActivityFragment.OnPhotoSelectionFromGalleryListener {
+public class MainActivity extends ActionBarActivity  {
 
     private final String TAG = "MainActivity";
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -54,7 +50,7 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
     private Bitmap bmp;
     private Button btnChoosePhoto;
     private Mat m;
-    private DialogFragment spectacleFrameFragment;
+    private Fragment spectacleFrameFragment;
     //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -189,13 +185,13 @@ public class MainActivity extends ActionBarActivity implements SpectacleFrameFra
         faceDetectionHelper = new FaceDetectionHelper(getBaseContext());
         directoryHelper = new DirectoryHelper(getBaseContext());
         cannyDetector = new CannyDetector();
-        tryOn = (Button) findViewById(R.id.buttonTryOn);
+        tryOn = (Button) findViewById(R.id.btn_sp_list_try_on);
         selfie = (Button) findViewById(R.id.buttonSelfie);
         btnChoosePhoto = ((Button) findViewById(R.id.buttonChoosePhoto));
         userImage = ((ImageView) findViewById(R.id.result));
         shapeBtn = (Button)findViewById(R.id.shape_btn);
         //setMFaceBitmap(3);
-        spectacleFrameFragment = new SpectacleFrameFragment();
+        spectacleFrameFragment = new SpectacleFrameListFragment();
         seekBar = (SeekBar)findViewById(R.id.seekBar);
         dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);
         if(hasPhoto) {
@@ -356,13 +352,13 @@ setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, points[36]-10,
     }
 
 
-    @Override
-    public void onFragmentInteraction(String id) {
-        spectacleFrameFragment.dismiss();
-//        setMFaceBitmap(id);
-//        Toast.makeText(this, "Photo " + id + " choosen", Toast.LENGTH_LONG).show();
-        tryOnSpectacle(id);
-    }
+//    @Override
+//    public void onFragmentInteraction(String id) {
+//       // spectacleFrameFragment.dismiss();
+////        setMFaceBitmap(id);
+////        Toast.makeText(this, "Photo " + id + " choosen", Toast.LENGTH_LONG).show();
+//        tryOnSpectacle(id);
+//    }
     private void setMFaceBitmap(int id) {
         switch (id) {
             case 1:
@@ -483,7 +479,7 @@ setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, points[36]-10,
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getBaseContext(),"Shopping Frames for " + detectedShape.name() ,Toast.LENGTH_SHORT).show();
-                spectacleFrameFragment.show(getSupportFragmentManager(),"");
+                //spectacleFrameFragment.show(getSupportFragmentManager(),"");
             }
         });
         alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -628,7 +624,7 @@ setUserBitmap(SpectacleUtils.placeSpectacle(bmp, spectacleBitmap, points[36]-10,
         return distance;
     }
 
-    @Override
+//    @Override
     public void onPhotoSelect(Uri uri) {
         photoSelectorActivityFragment.dismiss();
         dataDir = getBaseContext().getDir("stasmdata", Context.MODE_PRIVATE);

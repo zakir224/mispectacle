@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:background="@color/installation_background"
     android:layout_height="100dp"
     android:padding="10dp">
 
     <ImageView
-        android:id="@+id/ivSpectacle"
+        android:id="@+id/iv_sp_list_spectacle"
         android:layout_width="100dp"
         android:layout_height="90dp"
 
@@ -22,25 +23,24 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="Brand"
-            android:layout_alignTop="@+id/ivSpectacle"
-            android:layout_toRightOf="@+id/ivSpectacle"
-            android:layout_toEndOf="@+id/ivSpectacle"
-            android:id="@+id/textView"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp" />
+            android:layout_alignTop="@+id/iv_sp_list_spectacle"
+            android:layout_toRightOf="@+id/iv_sp_list_spectacle"
+            android:layout_toEndOf="@+id/iv_sp_list_spectacle"
+            android:id="@+id/textView" />
 
         <TextView
             android:textSize="16sp"
-            android:id="@+id/textViewBrand"
+            android:id="@+id/tv_sf_list_brand"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ray ban"
             android:layout_toRightOf="@+id/textViewC"
-            android:layout_alignBottom="@+id/textView"
             android:layout_alignTop="@+id/textView"
-            android:layout_toLeftOf="@+id/buttonTryOn"
-            android:layout_toStartOf="@+id/buttonTryOn" />
+            android:layout_alignBottom="@id/textView"
+            android:layout_toLeftOf="@+id/btn_sp_list_try_on"
+            android:layout_toStartOf="@+id/btn_sp_list_try_on"
+            android:layout_above="@+id/btn_sp_list_try_on" />
 
     <TextView
         android:textSize="16sp"
@@ -49,12 +49,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="Category: "
-        android:layout_below="@+id/textView"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView"
         android:id="@+id/textViewC"
-        android:layout_marginTop="2.5dp"
-        android:layout_marginBottom="2.5dp" />
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:textSize="16sp"
@@ -64,43 +63,42 @@
         android:gravity="center_vertical"
         android:text="Price:"
         android:id="@+id/textView3"
+        android:layout_toRightOf="@+id/iv_sp_list_spectacle"
+        android:layout_toEndOf="@+id/iv_sp_list_spectacle"
         android:layout_below="@+id/textViewC"
-        android:layout_alignLeft="@+id/textViewC"
-        android:layout_alignStart="@+id/textViewC"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="2.55dp" />
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:textSize="16sp"
-        android:id="@+id/textViewCategory"
+        android:id="@+id/tv_sf_list_category"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rectangle"
         android:layout_toRightOf="@+id/textViewC"
+        android:layout_toLeftOf="@+id/btn_sp_list_try_on"
+        android:layout_toStartOf="@+id/btn_sp_list_try_on"
         android:layout_alignBottom="@+id/textViewC"
-        android:layout_alignTop="@+id/textViewC"
-        android:layout_toLeftOf="@+id/buttonTryOn"
-        android:layout_toStartOf="@+id/buttonTryOn" />
+        android:layout_alignTop="@+id/textViewC" />
 
     <TextView
         android:textSize="16sp"
-        android:id="@+id/textViewPrice"
+        android:id="@+id/tv_sf_list_price"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rectangle "
-        android:layout_alignTop="@+id/textView3"
+        android:text="200 "
         android:layout_toRightOf="@+id/textViewC"
+        android:layout_toEndOf="@+id/textViewC"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_toLeftOf="@+id/buttonTryOn"
-        android:layout_toStartOf="@+id/buttonTryOn" />
+        android:layout_alignTop="@+id/textView3" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/AppTheme.Widget.InstallationButton"
         android:text="Try On"
-        android:id="@+id/buttonTryOn"
+        android:id="@+id/btn_sp_list_try_on"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

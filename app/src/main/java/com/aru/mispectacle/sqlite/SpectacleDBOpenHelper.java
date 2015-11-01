@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.aru.mispectacle.exception.MiSpectacleLog;
 import com.aru.mispectacle.model.FaceShape;
 import com.aru.mispectacle.model.Gender;
 import com.aru.mispectacle.model.Spectacle;
@@ -30,7 +31,7 @@ public class SpectacleDBOpenHelper extends SQLiteOpenHelper {
 
 
     private static final String TABLE_CREATE_SPECTACLE =
-            "CREATE TABLE IF NOT EXIST " + TABLE_SPECTACLE + " (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_SPECTACLE + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Spectacle.COLUMN_SPECTACLE_BRAND + " TEXT, " +
                     Spectacle.COLUMN_SPECTACLE_PRICE + " NUMERIC, " +
@@ -63,6 +64,7 @@ public class SpectacleDBOpenHelper extends SQLiteOpenHelper {
 
     public SpectacleDBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        MiSpectacleLog.i("constructor SpectacleDBOpenHelper");
     }
 
     @Override
@@ -72,11 +74,12 @@ public class SpectacleDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SHAPE);
         db.execSQL(CREATE_TABLE_SPECTACLE_CATEGORY);
         db.execSQL(CREATE_TABLE_SPECTACLE_LIST);
-        Log.i(LOGTAG, "Tables have been created");
+        MiSpectacleLog.i("Tables have been created");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        MiSpectacleLog.i("Database onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CREATE_SPECTACLE);
         onCreate(db);
     }

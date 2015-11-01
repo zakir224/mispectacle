@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
-import com.aru.mispectacle.SpectacleFrameFragment.OnFragmentInteractionListener;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

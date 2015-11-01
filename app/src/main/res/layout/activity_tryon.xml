@@ -42,7 +42,7 @@
         </Button>
 
         <Button
-            android:id="@+id/buttonTryOn"
+            android:id="@+id/btn_sp_list_try_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"

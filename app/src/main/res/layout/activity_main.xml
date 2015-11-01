@@ -42,7 +42,7 @@
         </Button>
 
         <Button
-            android:id="@+id/buttonTryOn"
+            android:id="@+id/btn_sp_list_try_on"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -16,5 +16,7 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="existing_image">Existing Image</string>
+    <string name="title_activity_spectacle_list">SpectacleListActivity</string>
+    <string name="context_menu">Context menu</string>
 
 </resources>
